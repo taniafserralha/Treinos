@@ -1,9 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-PT">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Treinos 2026</title>
+<meta name="theme-color" content="#fffafc">
 <style>
 :root {
   --bg:#fffafc;
@@ -14,39 +15,97 @@
   --accent:#d889aa;
   --accent-dark:#b8678a;
   --accent-soft:#f7e7ee;
+  --success:#7aae8a;
+  --shadow:0 12px 34px rgba(80,40,60,.08);
 }
 
-* { box-sizing:border-box; }
+* {
+  box-sizing:border-box;
+}
 
-html, body {
-  margin:0;
-  padding:0;
-  width:100%;
+html {
+  scroll-behavior:smooth;
 }
 
 body {
-  counter-reset: treinos;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-  background:linear-gradient(180deg,#fffafc 0%,#fff 100%);
+  margin:0;
+  background:linear-gradient(180deg,#fffafc 0%,#ffffff 100%);
   color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
   -webkit-text-size-adjust:100%;
 }
 
 .wrap {
-  width:min(1100px, calc(100% - 24px));
+  width:min(1100px,calc(100% - 24px));
   margin:0 auto;
-  padding:22px 0 120px;
+  padding:16px 0 48px;
 }
 
-.hero, .month {
-  background:var(--card);
+.progress-card {
+  position:sticky;
+  top:10px;
+  z-index:50;
+  background:rgba(255,255,255,.96);
   border:1px solid var(--border);
-  border-radius:22px;
+  border-radius:20px;
+  padding:16px 18px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  margin-bottom:14px;
+}
+
+.progress-top {
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.progress-number {
+  font-size:38px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-.04em;
+}
+
+.progress-side {
+  text-align:right;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700;
+}
+
+.progress-track {
+  height:12px;
+  background:#f1e7ec;
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:12px;
+}
+
+.progress-bar {
+  height:100%;
+  width:0%;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--accent),var(--success));
+  transition:width .35s ease;
+}
+
+.progress-message {
+  margin-top:10px;
+  color:var(--accent-dark);
+  font-size:14px;
+  font-weight:800;
 }
 
 .hero {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:22px;
   padding:28px;
-  margin-bottom:18px;
+  margin-bottom:16px;
+  box-shadow:var(--shadow);
 }
 
 .eyebrow {
@@ -66,19 +125,24 @@ h1 {
 }
 
 .hero p {
-  margin:16px 0 0;
+  margin:14px 0 0;
   color:var(--muted);
   font-size:16px;
+  line-height:1.55;
 }
 
 .months {
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:18px;
+  gap:16px;
 }
 
-.month {
+.month-card {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
   padding:20px;
+  box-shadow:var(--shadow);
 }
 
 .month-head {
@@ -105,7 +169,7 @@ h1 {
   gap:10px;
 }
 
-.training {
+.training-row {
   display:flex;
   align-items:center;
   gap:12px;
@@ -116,7 +180,12 @@ h1 {
   background:#fff;
   cursor:pointer;
   user-select:none;
-  -webkit-tap-highlight-color:rgba(216,137,170,.15);
+  transition:.18s ease;
+  -webkit-tap-highlight-color:rgba(216,137,170,.14);
+}
+
+.training-row:hover {
+  transform:translateY(-1px);
 }
 
 .training-check {
@@ -126,7 +195,7 @@ h1 {
   height:1px;
 }
 
-.box {
+.check-box {
   width:26px;
   height:26px;
   flex:0 0 26px;
@@ -135,83 +204,80 @@ h1 {
   background:#fff;
   display:grid;
   place-items:center;
+  transition:.18s ease;
 }
 
-.training-check:checked {
-  counter-increment: treinos;
-}
-
-.training-check:checked + .box {
+.training-check:checked + .check-box {
   background:var(--accent);
 }
 
-.training-check:checked + .box::after {
+.training-check:checked + .check-box::after {
   content:"✓";
   color:#fff;
   font-size:17px;
   font-weight:900;
 }
 
-.training:has(.training-check:checked) {
+.training-row.done {
   background:var(--accent-soft);
   border-color:var(--accent);
 }
 
-.date {
+.date-text {
   font-size:15px;
   font-weight:800;
 }
 
-.progress {
-  position:fixed;
-  left:50%;
-  bottom:12px;
-  transform:translateX(-50%);
-  width:min(720px, calc(100% - 20px));
-  background:rgba(255,255,255,.96);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:14px 18px;
-  box-shadow:0 10px 30px rgba(70,40,55,.12);
-  backdrop-filter:blur(8px);
-  z-index:100;
-}
-
-.progress-line {
+.actions {
+  margin-top:18px;
   display:flex;
-  align-items:baseline;
   justify-content:space-between;
-  gap:10px;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
 }
 
-.progress-count::before {
-  content: counter(treinos) "/47";
-  font-size:30px;
-  font-weight:900;
-  letter-spacing:-.03em;
-}
-
-.progress-label {
+.note {
   color:var(--muted);
   font-size:13px;
 }
 
-.note {
-  margin-top:6px;
-  color:var(--accent-dark);
-  font-size:13px;
-  font-weight:700;
+.reset-btn {
+  border:0;
+  border-radius:13px;
+  background:var(--text);
+  color:#fff;
+  padding:12px 16px;
+  font-size:14px;
+  font-weight:800;
+  cursor:pointer;
 }
 
 @media (max-width:800px) {
   .wrap {
     width:calc(100% - 16px);
-    padding:14px 0 120px;
+    padding:8px 0 34px;
+  }
+
+  .progress-card {
+    top:6px;
+    border-radius:16px;
+    padding:14px;
+    margin-bottom:10px;
+  }
+
+  .progress-number {
+    font-size:34px;
+  }
+
+  .progress-message {
+    font-size:13px;
   }
 
   .hero {
     padding:18px;
     border-radius:18px;
+    margin-bottom:12px;
   }
 
   h1 {
@@ -220,7 +286,6 @@ h1 {
 
   .hero p {
     font-size:15px;
-    line-height:1.45;
   }
 
   .months {
@@ -228,7 +293,7 @@ h1 {
     gap:12px;
   }
 
-  .month {
+  .month-card {
     padding:16px;
     border-radius:18px;
   }
@@ -237,362 +302,499 @@ h1 {
     grid-template-columns:1fr;
   }
 
-  .training {
+  .training-row {
     min-height:60px;
     padding:14px;
   }
 
-  .box {
+  .check-box {
     width:30px;
     height:30px;
     flex-basis:30px;
   }
 
-  .date {
+  .date-text {
     font-size:17px;
   }
 
-  .progress {
-    bottom:8px;
-    width:calc(100% - 16px);
-    border-radius:16px;
+  .actions {
+    align-items:stretch;
+  }
+
+  .reset-btn {
+    width:100%;
+    min-height:48px;
   }
 }
 </style>
 </head>
 <body>
 <main class="wrap">
+
+  <section class="progress-card">
+    <div class="progress-top">
+      <div class="progress-number"><span id="doneCount">0</span>/47</div>
+      <div class="progress-side"><span id="percent">0</span>% concluído</div>
+    </div>
+
+    <div class="progress-track">
+      <div id="progressBar" class="progress-bar"></div>
+    </div>
+
+    <div id="progressMessage" class="progress-message">
+      Ainda não começou. Dia 14 damos o primeiro check. 😏
+    </div>
+  </section>
+
   <section class="hero">
     <div class="eyebrow">Projeto até ao fim de 2026</div>
     <h1>3x por semana.<br>Sem vacilar. 💪🏼</h1>
-    <p>14 de setembro a 31 de dezembro de 2026 · segunda, quarta e sexta.</p>
+    <p>14 de setembro a 31 de dezembro · segunda, quarta e sexta · 47 treinos no total.</p>
   </section>
 
   <section class="months">
     
-    <section class="month">
+    <section class="month-card">
       <div class="month-head">
         <h2>Setembro</h2>
         <span>8 treinos</span>
       </div>
       <div class="training-list">
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-09-14">
-          <span class="box"></span>
-          <span class="date">Seg · 14/09</span>
+        
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-09-14">
+          <span class="check-box"></span>
+          <span class="date-text">Seg · 14/09</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-09-16">
-          <span class="box"></span>
-          <span class="date">Qua · 16/09</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-09-16">
+          <span class="check-box"></span>
+          <span class="date-text">Qua · 16/09</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-09-18">
-          <span class="box"></span>
-          <span class="date">Sex · 18/09</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-09-18">
+          <span class="check-box"></span>
+          <span class="date-text">Sex · 18/09</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-09-21">
-          <span class="box"></span>
-          <span class="date">Seg · 21/09</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-09-21">
+          <span class="check-box"></span>
+          <span class="date-text">Seg · 21/09</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-09-23">
-          <span class="box"></span>
-          <span class="date">Qua · 23/09</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-09-23">
+          <span class="check-box"></span>
+          <span class="date-text">Qua · 23/09</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-09-25">
-          <span class="box"></span>
-          <span class="date">Sex · 25/09</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-09-25">
+          <span class="check-box"></span>
+          <span class="date-text">Sex · 25/09</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-09-28">
-          <span class="box"></span>
-          <span class="date">Seg · 28/09</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-09-28">
+          <span class="check-box"></span>
+          <span class="date-text">Seg · 28/09</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-09-30">
-          <span class="box"></span>
-          <span class="date">Qua · 30/09</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-09-30">
+          <span class="check-box"></span>
+          <span class="date-text">Qua · 30/09</span>
         </label>
-        </div>
+        
+      </div>
     </section>
     
-    <section class="month">
+    <section class="month-card">
       <div class="month-head">
         <h2>Outubro</h2>
         <span>13 treinos</span>
       </div>
       <div class="training-list">
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-10-02">
-          <span class="box"></span>
-          <span class="date">Sex · 02/10</span>
+        
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-10-02">
+          <span class="check-box"></span>
+          <span class="date-text">Sex · 02/10</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-10-05">
-          <span class="box"></span>
-          <span class="date">Seg · 05/10</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-10-05">
+          <span class="check-box"></span>
+          <span class="date-text">Seg · 05/10</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-10-07">
-          <span class="box"></span>
-          <span class="date">Qua · 07/10</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-10-07">
+          <span class="check-box"></span>
+          <span class="date-text">Qua · 07/10</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-10-09">
-          <span class="box"></span>
-          <span class="date">Sex · 09/10</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-10-09">
+          <span class="check-box"></span>
+          <span class="date-text">Sex · 09/10</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-10-12">
-          <span class="box"></span>
-          <span class="date">Seg · 12/10</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-10-12">
+          <span class="check-box"></span>
+          <span class="date-text">Seg · 12/10</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-10-14">
-          <span class="box"></span>
-          <span class="date">Qua · 14/10</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-10-14">
+          <span class="check-box"></span>
+          <span class="date-text">Qua · 14/10</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-10-16">
-          <span class="box"></span>
-          <span class="date">Sex · 16/10</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-10-16">
+          <span class="check-box"></span>
+          <span class="date-text">Sex · 16/10</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-10-19">
-          <span class="box"></span>
-          <span class="date">Seg · 19/10</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-10-19">
+          <span class="check-box"></span>
+          <span class="date-text">Seg · 19/10</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-10-21">
-          <span class="box"></span>
-          <span class="date">Qua · 21/10</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-10-21">
+          <span class="check-box"></span>
+          <span class="date-text">Qua · 21/10</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-10-23">
-          <span class="box"></span>
-          <span class="date">Sex · 23/10</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-10-23">
+          <span class="check-box"></span>
+          <span class="date-text">Sex · 23/10</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-10-26">
-          <span class="box"></span>
-          <span class="date">Seg · 26/10</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-10-26">
+          <span class="check-box"></span>
+          <span class="date-text">Seg · 26/10</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-10-28">
-          <span class="box"></span>
-          <span class="date">Qua · 28/10</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-10-28">
+          <span class="check-box"></span>
+          <span class="date-text">Qua · 28/10</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-10-30">
-          <span class="box"></span>
-          <span class="date">Sex · 30/10</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-10-30">
+          <span class="check-box"></span>
+          <span class="date-text">Sex · 30/10</span>
         </label>
-        </div>
+        
+      </div>
     </section>
     
-    <section class="month">
+    <section class="month-card">
       <div class="month-head">
         <h2>Novembro</h2>
         <span>13 treinos</span>
       </div>
       <div class="training-list">
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-11-02">
-          <span class="box"></span>
-          <span class="date">Seg · 02/11</span>
+        
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-11-02">
+          <span class="check-box"></span>
+          <span class="date-text">Seg · 02/11</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-11-04">
-          <span class="box"></span>
-          <span class="date">Qua · 04/11</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-11-04">
+          <span class="check-box"></span>
+          <span class="date-text">Qua · 04/11</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-11-06">
-          <span class="box"></span>
-          <span class="date">Sex · 06/11</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-11-06">
+          <span class="check-box"></span>
+          <span class="date-text">Sex · 06/11</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-11-09">
-          <span class="box"></span>
-          <span class="date">Seg · 09/11</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-11-09">
+          <span class="check-box"></span>
+          <span class="date-text">Seg · 09/11</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-11-11">
-          <span class="box"></span>
-          <span class="date">Qua · 11/11</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-11-11">
+          <span class="check-box"></span>
+          <span class="date-text">Qua · 11/11</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-11-13">
-          <span class="box"></span>
-          <span class="date">Sex · 13/11</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-11-13">
+          <span class="check-box"></span>
+          <span class="date-text">Sex · 13/11</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-11-16">
-          <span class="box"></span>
-          <span class="date">Seg · 16/11</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-11-16">
+          <span class="check-box"></span>
+          <span class="date-text">Seg · 16/11</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-11-18">
-          <span class="box"></span>
-          <span class="date">Qua · 18/11</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-11-18">
+          <span class="check-box"></span>
+          <span class="date-text">Qua · 18/11</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-11-20">
-          <span class="box"></span>
-          <span class="date">Sex · 20/11</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-11-20">
+          <span class="check-box"></span>
+          <span class="date-text">Sex · 20/11</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-11-23">
-          <span class="box"></span>
-          <span class="date">Seg · 23/11</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-11-23">
+          <span class="check-box"></span>
+          <span class="date-text">Seg · 23/11</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-11-25">
-          <span class="box"></span>
-          <span class="date">Qua · 25/11</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-11-25">
+          <span class="check-box"></span>
+          <span class="date-text">Qua · 25/11</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-11-27">
-          <span class="box"></span>
-          <span class="date">Sex · 27/11</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-11-27">
+          <span class="check-box"></span>
+          <span class="date-text">Sex · 27/11</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-11-30">
-          <span class="box"></span>
-          <span class="date">Seg · 30/11</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-11-30">
+          <span class="check-box"></span>
+          <span class="date-text">Seg · 30/11</span>
         </label>
-        </div>
+        
+      </div>
     </section>
     
-    <section class="month">
+    <section class="month-card">
       <div class="month-head">
         <h2>Dezembro</h2>
         <span>13 treinos</span>
       </div>
       <div class="training-list">
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-12-02">
-          <span class="box"></span>
-          <span class="date">Qua · 02/12</span>
+        
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-12-02">
+          <span class="check-box"></span>
+          <span class="date-text">Qua · 02/12</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-12-04">
-          <span class="box"></span>
-          <span class="date">Sex · 04/12</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-12-04">
+          <span class="check-box"></span>
+          <span class="date-text">Sex · 04/12</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-12-07">
-          <span class="box"></span>
-          <span class="date">Seg · 07/12</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-12-07">
+          <span class="check-box"></span>
+          <span class="date-text">Seg · 07/12</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-12-09">
-          <span class="box"></span>
-          <span class="date">Qua · 09/12</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-12-09">
+          <span class="check-box"></span>
+          <span class="date-text">Qua · 09/12</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-12-11">
-          <span class="box"></span>
-          <span class="date">Sex · 11/12</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-12-11">
+          <span class="check-box"></span>
+          <span class="date-text">Sex · 11/12</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-12-14">
-          <span class="box"></span>
-          <span class="date">Seg · 14/12</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-12-14">
+          <span class="check-box"></span>
+          <span class="date-text">Seg · 14/12</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-12-16">
-          <span class="box"></span>
-          <span class="date">Qua · 16/12</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-12-16">
+          <span class="check-box"></span>
+          <span class="date-text">Qua · 16/12</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-12-18">
-          <span class="box"></span>
-          <span class="date">Sex · 18/12</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-12-18">
+          <span class="check-box"></span>
+          <span class="date-text">Sex · 18/12</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-12-21">
-          <span class="box"></span>
-          <span class="date">Seg · 21/12</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-12-21">
+          <span class="check-box"></span>
+          <span class="date-text">Seg · 21/12</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-12-23">
-          <span class="box"></span>
-          <span class="date">Qua · 23/12</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-12-23">
+          <span class="check-box"></span>
+          <span class="date-text">Qua · 23/12</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-12-25">
-          <span class="box"></span>
-          <span class="date">Sex · 25/12</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-12-25">
+          <span class="check-box"></span>
+          <span class="date-text">Sex · 25/12</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-12-28">
-          <span class="box"></span>
-          <span class="date">Seg · 28/12</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-12-28">
+          <span class="check-box"></span>
+          <span class="date-text">Seg · 28/12</span>
         </label>
         
-        <label class="training">
-          <input type="checkbox" class="training-check" id="t-2026-12-30">
-          <span class="box"></span>
-          <span class="date">Qua · 30/12</span>
+        <label class="training-row">
+          <input type="checkbox" class="training-check" data-date="2026-12-30">
+          <span class="check-box"></span>
+          <span class="date-text">Qua · 30/12</span>
         </label>
-        </div>
+        
+      </div>
     </section>
     
   </section>
 
-  <section class="progress">
-    <div class="progress-line">
-      <div class="progress-count"></div>
-      <div class="progress-label">treinos feitos</div>
-    </div>
-    <div class="note">Toca numa data para marcar ✓</div>
-  </section>
+  <div class="actions">
+    <div class="note">Os checks ficam guardados automaticamente neste dispositivo.</div>
+    <button class="reset-btn" id="resetBtn" type="button">Limpar todos os checks</button>
+  </div>
+
 </main>
+
+<script>
+(function() {
+  var STORAGE_KEY = "tania-treinos-2026-v2";
+  var checks = document.querySelectorAll(".training-check");
+  var doneCount = document.getElementById("doneCount");
+  var percent = document.getElementById("percent");
+  var progressBar = document.getElementById("progressBar");
+  var progressMessage = document.getElementById("progressMessage");
+  var resetBtn = document.getElementById("resetBtn");
+
+  var phrases = [
+    {min:0, text:"Ainda não começou. Dia 14 damos o primeiro check. 😏"},
+    {min:1, text:"Começou. Agora é só repetir. 🔥"},
+    {min:3, text:"Uma semana feita. Já conta. 💪🏼"},
+    {min:6, text:"Duas semanas. Isto já não é acaso. 👀"},
+    {min:9, text:"Três semanas. A consistência está a aparecer. ✨"},
+    {min:12, text:"Um quarto do caminho. Bora continuar. 😏"},
+    {min:16, text:"Já tens ritmo. Agora não largamos. 💪🏼"},
+    {min:20, text:"20 feitos. Isto já é compromisso. 🔥"},
+    {min:24, text:"METADE. Agora é onde muita gente vacila — tu não. 😏"},
+    {min:28, text:"Mais de metade. Já estás noutra fase. 💥"},
+    {min:32, text:"32 feitos. A versão que começa já ficou para trás. 👀"},
+    {min:36, text:"Reta final. Agora é fechar bonito. 💪🏼"},
+    {min:40, text:"40. QUARENTA. Agora ninguém te tira isto. 🔥"},
+    {min:44, text:"Faltam só 3. Já dá para sentir o 47/47. 😏"},
+    {min:46, text:"FALTA UM. Só. Um. 😭🔥"},
+    {min:47, text:"47/47. NÃO VACILÁMOS. 🏆💪🏼🔥"}
+  ];
+
+  function getSelected() {
+    var selected = [];
+    for (var i = 0; i < checks.length; i++) {
+      if (checks[i].checked) {
+        selected.push(checks[i].getAttribute("data-date"));
+      }
+    }
+    return selected;
+  }
+
+  function save() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(getSelected()));
+    } catch(e) {}
+  }
+
+  function updateUI() {
+    var count = 0;
+
+    for (var i = 0; i < checks.length; i++) {
+      var row = checks[i].closest(".training-row");
+
+      if (checks[i].checked) {
+        count++;
+        row.classList.add("done");
+      } else {
+        row.classList.remove("done");
+      }
+    }
+
+    var pct = Math.round((count / 47) * 100);
+
+    doneCount.textContent = count;
+    percent.textContent = pct;
+    progressBar.style.width = pct + "%";
+
+    var phrase = phrases[0].text;
+    for (var j = 0; j < phrases.length; j++) {
+      if (count >= phrases[j].min) phrase = phrases[j].text;
+    }
+    progressMessage.textContent = phrase;
+  }
+
+  function load() {
+    var saved = [];
+    try {
+      saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    } catch(e) {
+      saved = [];
+    }
+
+    for (var i = 0; i < checks.length; i++) {
+      var d = checks[i].getAttribute("data-date");
+      checks[i].checked = saved.indexOf(d) !== -1;
+
+      checks[i].addEventListener("change", function() {
+        save();
+        updateUI();
+      });
+    }
+
+    updateUI();
+  }
+
+  resetBtn.addEventListener("click", function() {
+    var ok = confirm("Queres mesmo limpar todos os checks?");
+    if (!ok) return;
+
+    for (var i = 0; i < checks.length; i++) {
+      checks[i].checked = false;
+    }
+
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch(e) {}
+
+    updateUI();
+  });
+
+  load();
+})();
+</script>
 </body>
 </html>
